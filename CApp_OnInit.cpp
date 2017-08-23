@@ -1,0 +1,44 @@
+//==============================================================================
+#include "CApp.h"
+
+//==============================================================================
+bool CApp::OnInit() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+        return false;
+    }
+
+    if((Surf_Display = SDL_SetVideoMode(WWIDTH, WHEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    /*if(CArea::AreaControl.OnLoad("./maps/1.area") == false) {
+    	return false;
+    }*/
+
+    if (CMap::MapControl.OnLoad("./maps/test.tmx") == false) {
+        printf("failed to load map\n");
+        return false;
+    }
+
+    SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
+
+    if(Player.OnLoad("images/yoshi.png", 64, 64, 8) == false) {
+    	return false;
+    }
+
+    /*if(Player2.OnLoad("images/yoshi.png", 64, 64, 8) == false) {
+    	return false;
+    }*/
+
+    Player2.X = 100;
+
+    CEntity::EntityList.push_back(&Player);
+    CEntity::EntityList.push_back(&Player2);
+
+	CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
+    CCamera::CameraControl.SetTarget(&Player.X, &Player.Y);
+
+    return true;
+}
+
+//==============================================================================
