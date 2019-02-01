@@ -1,6 +1,6 @@
 //==============================================================================
 #include "CEntity.h"
-
+#include <iostream>
 //==============================================================================
 std::vector<CEntity*> 	CEntity::EntityList;
 
@@ -125,6 +125,7 @@ void CEntity::OnAnimate() {
 
 //------------------------------------------------------------------------------
 bool CEntity::OnCollision(CEntity* Entity) {
+	return false;
 }
 
 //==============================================================================
@@ -249,6 +250,7 @@ bool CEntity::PosValid(int NewX, int NewY) {
 	int EndX	= ((NewX + Col_X) + Width - Col_Width - 1) 		/ TILE_SIZE;
 	int EndY	= ((NewY + Col_Y) + Height - Col_Height - 1)	/ TILE_SIZE;
 
+	//FIXME: layer logic
 	for(int iY = StartY;iY <= EndY;iY++) {
 		for(int iX = StartX;iX <= EndX;iX++) {
 			CTile* Tile = CMap::MapControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
@@ -261,7 +263,7 @@ bool CEntity::PosValid(int NewX, int NewY) {
 
 	if(Flags & ENTITY_FLAG_MAPONLY) {
 	}else{
-		for(int i = 0;i < EntityList.size();i++) {
+		for(unsigned int i = 0;i < EntityList.size();i++) {
 			if(PosValidEntity(EntityList[i], NewX, NewY) == false) {
 				Return = false;
 			}
@@ -307,7 +309,7 @@ bool CEntity::PosValidEntity(CEntity* Entity, int NewX, int NewY) {
 
 bool CEntity::Jump() {
     if(CanJump == false) return false;
- 
+ 	std::cout << "jump!" << std::endl;
     SpeedY = -MaxSpeedY;
  
     return true;

@@ -12,7 +12,7 @@ CC=g++
 OBJECTS=CAnimation.o CApp.o CApp_OnCleanup.o CApp_OnEvent.o CApp_OnInit.o CApp_OnLoop.o CApp_OnRender.o CArea.o CCamera.o CEntity.o CEntityCol.o CEvent.o CFPS.o CMap.o CPlayer.o CSurface.o CTile.o
 
 # Compiler flags
-CPPFLAGS=-Wall -g `sdl-config --cflags`
+CPPFLAGS=-Wall -g -std=c++11 `sdl-config --cflags`
 
 # Linker flags
 LDFLAGS=`sdl-config --libs` -lSDL -lSDL_image -lpugixml
