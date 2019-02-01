@@ -18,6 +18,7 @@ class CMap {
 	private:
 		unsigned int			mWidth, mHeight;
 		unsigned int			mTile_W, mTile_H;
+		std::vector<std::vector<CTile>> mLayerData;
 		std::vector<CTile>      TileList;
 
 	public:
