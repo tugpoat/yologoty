@@ -23,7 +23,7 @@ bool CArea::OnLoad(const char* File) {
 
     fscanf(FileHandle, "%s\n", TilesetFile);
 
-    if((Surf_Tileset = CSurface::OnLoad(TilesetFile)) == false) {
+    if((Surf_Tileset = CSurface::OnLoad(TilesetFile)) == nullptr) {
         fclose(FileHandle);
         printf("%s\n", "CArea::OnLoad() Failed to load tileset");
         return false;

@@ -19,7 +19,7 @@ LDFLAGS=`sdl-config --libs` -lSDL -lSDL_image -lpugixml
 
 main: CApp.cpp
 	$(CC) $(CPPFLAGS) -c CAnimation.cpp CApp.cpp CApp_OnCleanup.cpp CApp_OnEvent.cpp CApp_OnInit.cpp CApp_OnLoop.cpp CApp_OnRender.cpp CArea.cpp CCamera.cpp CEntity.cpp CEntityCol.cpp CEvent.cpp CFPS.cpp CMap.cpp CPlayer.cpp CSurface.cpp CTile.cpp
-	$(CC) $(OBJECTS) $(CPPFLAGS) $(LDFLAGS) -o game
+	$(CC) $(OBJECTS) $(CPPFLAGS) $(LDFLAGS) -o bin/executable
 
 # cleanup
 clean:

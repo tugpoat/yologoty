@@ -31,9 +31,9 @@ bool CMap::OnLoad(char* File) {
     pugi::xml_node tileset = map.child("tileset");
 
     std::string TilesetFile = tileset.child("image").attribute("source").as_string();
-    std::cout << TilesetFile << std::endl;
+    std::cout << "tileset: " << TilesetFile << std::endl;
 
-    if((Surf_Tileset = CSurface::OnLoad(TilesetFile.c_str())) == false) {
+    if((Surf_Tileset = CSurface::OnLoad(TilesetFile.c_str())) == nullptr) {
         printf("%s\n", "CArea::OnLoad() Failed to load tileset");
         return false;
     }
@@ -43,7 +43,7 @@ bool CMap::OnLoad(char* File) {
     for (pugi::xpath_node_set::const_iterator it = tiles.begin(); it != tiles.end(); ++it)
     {
         pugi::xpath_node node = *it;
-        std::cout << node.node().attribute("id").as_string() << "\n";
+        std::cout << node.node().attribute("id").as_string();
         std::cout << node.node().find_child_by_attribute("property", "name", "type").name() << std::endl;
     }
 
@@ -55,27 +55,32 @@ bool CMap::OnLoad(char* File) {
         std::vector<CTile> layerTiles;
 
         //We don't need any of the newlines
-        //layerData.erase(std::remove(layerData.begin(), layerData.end(), '\n'), layerData.end());
-        std::cout << layerData << std::endl;
         std::string::size_type i = 0;
         while ((i = layerData.find('\n', i)) > 0) {
+            std::cout << 'found' << std::endl;
             layerData.erase(i);
         }
+        //layerData.erase(std::remove(layerData.begin(), layerData.end(), '\n'), layerData.end());
+        std::cout << layerData << std::endl;
+        
         std::cout << "dicks " << layerData << std::endl;
 
         std::size_t cpos(layerData.find_first_of(","));
+        std::cout << cpos << std::endl;
 
-        while (cpos != std::string::npos) {
+        while (cpos > 0 && cpos <= std::string::npos) {
             CTile tempTile;
-            tempTile.TileID = atoi(layerData.substr(0, cpos).c_str());
+            std::string tileidstr = layerData.substr(0, cpos);
+            std::cout << "tileidstr: " << tileidstr << std::endl;
+            tempTile.TileID = stoi(tileidstr);
 
-            pugi::xml_node tile_properties = tileset.find_child_by_attribute("tile", "id", layerData.substr(0, cpos).c_str()).child("properties");
-            //std::cout << tile_properties.find_child_by_attribute("property", "name", "type").attribute("value").as_int() << std::endl;
+            pugi::xml_node tile_properties = tileset.find_child_by_attribute("tile", "id", tileidstr.c_str()).child("properties");
+            std::cout << "tiletype: " << tile_properties.find_child_by_attribute("property", "name", "type").attribute("value").as_int() << std::endl;
             tempTile.TypeID = tile_properties.find_child_by_attribute("property", "name", "type").attribute("value").as_int();
             std::cout << tempTile.TileID << ":" << tempTile.TypeID << " ";
 
             layerTiles.push_back(tempTile);
-            layerData.erase(0, cpos+1);
+            layerData.erase(0, cpos);
             cpos = layerData.find_first_of(",");
 
         }
